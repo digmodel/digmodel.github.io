@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="sv">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Test Frontend</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="navbar" aria-label="Huvudmeny">
+        <a class="brand" href="#top" aria-label="Till startsidan">Frontend Test</a>
+        <div class="nav-links">
+          <a href="#features">Funktioner</a>
+          <a href="#preview">Förhandsvisning</a>
+          <a href="#contact">Kontakt</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-content">
+          <p class="eyebrow">Ny testvy</p>
+          <h1 id="hero-title">En enkel startsida för projektets frontend</h1>
+          <p class="hero-text">
+            Den här sidan är skapad som en lättviktig HTML- och CSS-bas för att snabbt kunna testa
+            layout, färger och responsiv design i webbläsaren.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#preview">Se demo</a>
+            <a class="button secondary" href="#features">Läs mer</a>
+          </div>
+        </div>
+        <aside class="hero-card" aria-label="Statuskort">
+          <span class="status-dot" aria-hidden="true"></span>
+          <h2>Frontend redo</h2>
+          <p>Statisk testsida med separerad CSS och responsiva komponenter.</p>
+        </aside>
+      </section>
+
+      <section id="features" class="section" aria-labelledby="features-title">
+        <p class="eyebrow">Innehåll</p>
+        <h2 id="features-title">Vad ingår?</h2>
+        <div class="feature-grid">
+          <article class="feature-card">
+            <h3>Responsiv layout</h3>
+            <p>Grid och flexbox gör att sidan fungerar på både mobil och större skärmar.</p>
+          </article>
+          <article class="feature-card">
+            <h3>Ren struktur</h3>
+            <p>Semantiska HTML-element gör sidan enklare att bygga vidare på.</p>
+          </article>
+          <article class="feature-card">
+            <h3>Modern stil</h3>
+            <p>CSS-variabler, tydliga kontraster och mjuka skuggor ger en enkel designgrund.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="preview" class="section preview-panel" aria-labelledby="preview-title">
+        <div>
+          <p class="eyebrow">Demo</p>
+          <h2 id="preview-title">Redo att öppnas i webbläsaren</h2>
+          <p>
+            Starta en statisk server från projektroten och öppna frontend/index.html för att testa
+            sidan lokalt.
+          </p>
+        </div>
+        <code>python3 -m http.server 8000</code>
+      </section>
+    </main>
+
+    <footer id="contact" class="site-footer">
+      <p>Bygg vidare härifrån när backend och frontend kopplas ihop.</p>
+    </footer>
+  </body>
+</html>
