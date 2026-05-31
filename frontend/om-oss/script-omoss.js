@@ -82,7 +82,7 @@ const I18N = {
           laser: 'Laserdata – Styrelsen for Dataforsyning og Infrastruktur (SDFI), CC BY 4.0.'
         }
       },
-      'om-oss': {
+      about: {
         title: 'Om Digmodel',
         p1: 'Digmodel AB tilbyder tjenester, der reducerer risici og sænker barriererne for implementering af digitalisering og åbne data inden for arkitektur og samfundsbyggeri.',
         p2: 'Virksomhedens langsigtede mål er at distribuere sikker åben data som grundlag for innovation og udvikling. Med en innovativ "OpenData-OpenAI"-forretningsmodel vil virksomheden fremme fremtidig digitalisering og bæredygtighedsarbejde.',
