@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <title>Premium aktiverat</title>
+
+  <!-- Firebase (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+
+  <style>
+
+    :root { color-scheme: light dark; }
+
+    body {
+
+      margin: 0;
+
+      min-height: 100vh;
+
+      display: flex;
+
+      flex-direction: column;
+
+      justify-content: center;
+
+      align-items: center;
+
+      background: var(--color-primary, #002235);
+
+      color: #ffffff;
+
+      font-family: var(--font-primary, 'Montserrat'), system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+
+      padding: 24px;
+
+    }
+
+    .muted { opacity: .75; color: #ffffff; }
+
+    .success-layout {
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      gap: 16px;
+
+      text-align: center;
+
+    }
+
+    .success-layout img {
+
+      max-width: 260px;
+
+      width: 100%;
+
+      height: auto;
+
+    }
+
+    h2 {
+
+      font-size: clamp(16px, 2vw, 20px);
+
+      font-weight: var(--font-weight-regular);
+
+      color: #ffffff;
+
+      max-width: 1200px;
+
+      line-height: 1.6;
+
+      text-align: center;
+
+      font-family: var(--font-primary, 'Montserrat'), system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+
+      margin: 0;
+
+    }
+
+  </style>
+  <script>
+    // Language sensing and basic i18n for this page
+    (function () {
+      function detectLanguage() {
+        try {
+          const urlLang = new URLSearchParams(window.location.search).get('lang');
+          const normalize = (val) => {
+            if (!val) return null;
+            const v = String(val).toLowerCase();
+            if (v === 'dk') return 'da';
+            if (v.startsWith('da')) return 'da';
+            if (v.startsWith('sv')) return 'sv';
+            return null;
+          };
+          const fromUrl = normalize(urlLang);
+          if (fromUrl) { try { localStorage.setItem('lang', fromUrl); } catch {} return fromUrl; }
+          const keys = ['lang','language','selectedLanguage','siteLanguage'];
+          for (const k of keys) {
+            try {
+              const val = normalize(localStorage.getItem(k));
+              if (val) return val;
+            } catch {}
+          }
+          return 'sv';
+        } catch { return 'sv'; }
+      }
+
+      const LANG = detectLanguage();
+      try { document.documentElement.lang = LANG; } catch {}
+      window.__lang = LANG;
+
+      const HEAD = { sv: 'Tack för din betalning!', da: 'Tak for din betaling!' };
+      const TITLE = { sv: 'Premium aktiverat', da: 'Premium aktiveret' };
+
+      document.addEventListener('DOMContentLoaded', function () {
+        document.title = TITLE[LANG] || TITLE.sv;
+        const heading = document.getElementById('headline'); if (heading) heading.textContent = HEAD[LANG] || HEAD.sv;
+        const msg = document.getElementById('msg');
+        if (msg) msg.textContent = (LANG === 'da') ? 'Aktiverer Premium på din konto…' : 'Aktiverar Premium på ditt konto…';
+      });
+    })();
+  </script>
+  <script>
+  (async () => {
+    try {
+      // Vänta in Firebase
+      const ready = () => new Promise(r => {
+        if (window.firebase?.apps?.length) return r();
+        document.addEventListener("firebase-ready", r, { once: true });
+      });
+      await ready();
+
+      const user = firebase.auth().currentUser;
+      if (user) {
+        // Hämta ny token så custom claims (role=premium) slår igenom direkt
+        await user.getIdToken(true);
+        await user.reload();
+        // (valfritt) Hämta users/{uid}.role för att visa “Premium ✅”
+        const snap = await firebase.firestore().collection("users").doc(user.uid).get();
+        const role = (snap.data()?.role || "").toUpperCase();
+        console.log("Din roll är nu:", role);
+        // Uppdatera UI om du vill...
+      }
+    } catch (e) {
+      console.warn("Token refresh på success-sidan misslyckades:", e);
+    }
+  })();
+</script>
+
+</head>
+<body>
+
+  <div class="success-layout">
+
+    <img src="https://digmodel.se/assets/Digmodel_Logotyp (60pt_Tagline) Inverted.svg" alt="Digmodel logotyp" />
+
+    <h2 id="headline">Tack för din betalning!</h2>
+
+    <p id="msg" class="muted">Aktiverar Premium pǾ ditt konto�?�</p>
+
+  </div>
+
+
+
+  <script>
+  (async () => {
+    const msg = document.getElementById("msg");
+
+    // 1) Initiera Firebase utan nätverks-call (undvik 404/HTML→JSON-fel)
+    try {
+      if (!window.firebase) throw new Error("Firebase SDK saknas");
+
+      // Hårdkoda konfigen (samma som i din app)
+      const firebaseConfig = {
+        apiKey: "AIzaSyC3_O3FBoJME-5JiiYHz-8bMmjHY8R83q4",
+        authDomain: "digmodel-app-463217.firebaseapp.com",
+        projectId: "digmodel-app-463217",
+        storageBucket: "digmodel-app-463217.firebasestorage.app",
+        messagingSenderId: "784968031589",
+        appId: "1:784968031589:web:b1142c64043f72e51bd58c",
+        measurementId: "G-6BTZ999W4Z"
+      };
+
+      if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+      }
+      // Om sidan råkar laddas där en app redan finns, gör inget.
+    } catch (e) {
+      console.error(e);
+      msg.textContent = "Tekniskt fel: kunde inte initiera Firebase.";
+      return;
+    }
+
+    const db = firebase.firestore();
+
+    // 2) Vänta på inloggad användare
+    firebase.auth().onAuthStateChanged(async (user) => {
+      if (!user) {
+        msg.textContent = "Du måste vara inloggad. Omdirigerar…";
+        return location.replace("/download/");
+      }
+
+      try {
+        // 3) Försök få in nya custom claims direkt
+        await user.getIdToken(true);
+        const tokenResult = await user.getIdTokenResult();
+        if (tokenResult.claims?.role === "premium") {
+          msg.textContent = "Premium är aktivt! 🎉";
+          return location.replace("/download/");
+        }
+
+        // 4) Lyssna på Firestore tills role=premium (webhooken uppdaterar)
+        msg.textContent = "Bekräftar Premium… (kan ta några sekunder)";
+        let done = false;
+
+        const timeout = setTimeout(async () => {
+          if (done) return;
+          done = true;
+          await user.getIdToken(true);
+          location.replace("/download/");
+        }, 30000);
+
+        const unsub = db.collection("users").doc(user.uid).onSnapshot(async (snap) => {
+          if (done) return;
+          const role = snap.data()?.role;
+          if (role === "premium") {
+            done = true;
+            clearTimeout(timeout);
+            unsub();
+            await user.getIdToken(true);
+            location.replace("/download/");
+          }
+        });
+      } catch (err) {
+        console.error(err);
+        msg.textContent = "Ett fel uppstod. Omdirigerar…";
+        location.replace("/download/");
+      }
+    });
+  })();
+  </script>
+  <script>
+    // Translate dynamic status messages set by the script above (Danish only)
+    (function () {
+      if (window.__lang !== 'da') return;
+      const msg = document.getElementById('msg');
+      if (!msg) return;
+      const translate = () => {
+        const s = (msg.textContent || '').trim();
+        let out = s;
+        if (/Tekniskt/i.test(s)) out = 'Teknisk fejl: kunne ikke initialisere Firebase.';
+        else if (/inlogg/i.test(s)) out = 'Du skal være logget ind. Omdirigerer…';
+        else if (/Premium.*aktiv/i.test(s) || /Premium.*aktiveret/i.test(s)) out = 'Premium er aktivt! ';
+        else if (/Bekr/i.test(s)) out = 'Bekræfter Premium… (kan tage nogle sekunder)';
+        else if (/Ett fel/i.test(s) || /feil|fel/i.test(s)) out = 'Der opstod en fejl. Omdirigerer…';
+        else if (/Aktiver/i.test(s)) out = 'Aktiverer Premium på din konto…';
+        if (out !== s) msg.textContent = out;
+      };
+      const obs = new MutationObserver(translate);
+      obs.observe(msg, { childList: true, characterData: true, subtree: true });
+      translate();
+    })();
+  </script>
+</body>
+</html>

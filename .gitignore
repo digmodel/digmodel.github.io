@@ -1,0 +1,6 @@
+# Server-only files are not published by GitHub Pages.
+frontend/.htaccess
+frontend/htaccess
+frontend/*.php
+frontend/*php-bk
+

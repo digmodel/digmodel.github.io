@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" width="24.1382" height="19.4646" viewBox="0 0 24.1382 19.4646">
+  <g id="origo">
+    <line x1="1" y1="18.4646" x2="12.0691" y2="12.0691" fill="none" stroke="#072334" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/>
+    <line x1="23.1382" y1="18.4646" x2="12.0691" y2="12.0691" fill="none" stroke="#072334" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/>
+    <line x1="12.0691" y1="12.0691" x2="12.0691" y2="1" fill="none" stroke="#072334" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"/>
+  </g>
+</svg>

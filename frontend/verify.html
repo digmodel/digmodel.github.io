@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <title>Verifiera e-post & köp</title>
+
+  <!-- Firebase (compat) – samma family som success.html -->
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-functions-compat.js"></script>
+
+  <style>
+    :root { color-scheme: light dark; }
+    body{
+      margin:0; min-height:100vh; display:flex; flex-direction:column;
+      justify-content:center; align-items:center;
+      background: var(--color-primary, #002235);
+      color:#fff;
+      font-family: var(--font-primary, 'Montserrat'), system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      padding:24px;
+    }
+    .muted{opacity:.8}
+    .layout{
+      display:flex; flex-direction:column; align-items:center; gap:16px; text-align:center; width:100%; max-width:520px;
+    }
+    .layout img{ max-width:260px; width:100%; height:auto; }
+    h2{
+      font-size:clamp(18px,2vw,22px);
+      font-weight: var(--font-weight-regular, 400);
+      color:#fff; margin:0 0 8px 0; line-height:1.6;
+    }
+    form{ width:100%; display:flex; flex-direction:column; gap:10px; margin-top:8px; }
+    input, button{
+      width:100%; padding:12px 14px; border-radius:10px; border:0; font-size:16px;
+      font-family: inherit;
+    }
+    input{ background:#fff; color:#111; }
+    .btn{
+      background:#2BC6D6; color:#002235; font-weight:600; cursor:pointer;
+      transition: transform .06s ease;
+    }
+    .btn:active{ transform: translateY(1px); }
+    .hidden{ display:none; }
+    .hint{ font-size:.95rem; }
+  </style>
+
+  <!-- mini-i18n (samma ton som success.html) -->
+  <script>
+    (function () {
+      function detectLanguage() {
+        try {
+          const urlLang = new URLSearchParams(window.location.search).get('lang');
+          const normalize = (v)=>!v?null:String(v).toLowerCase().startsWith('da')?'da':(String(v).toLowerCase().startsWith('sv')?'sv':null);
+          const fromUrl = normalize(urlLang);
+          if (fromUrl) { try{localStorage.setItem('lang', fromUrl);}catch{} return fromUrl; }
+          const keys = ['lang','language','selectedLanguage','siteLanguage'];
+          for (const k of keys){ try{ const v = normalize(localStorage.getItem(k)); if (v) return v; }catch{} }
+          return 'sv';
+        } catch { return 'sv'; }
+      }
+      const LANG = detectLanguage(); try{ document.documentElement.lang = LANG; }catch{}
+      window.__lang = LANG;
+      const COPY = {
+        title: { sv:'Verifiera e-post & köp', da:'Bekræft e-mail & køb' },
+        head:  { sv:'Logga in med e-post',    da:'Log ind med e-mail' },
+        send:  { sv:'Skicka inloggningslänk', da:'Send login-link' },
+        cont:  { sv:'Fortsätt till betalning',da:'Fortsæt til betaling' },
+        msg1:  { sv:'Ange din företagsadress så skickar vi en inloggningslänk.',
+                 da:'Angiv din virksomhedsadresse, så sender vi et loginlink.' },
+        sent:  { sv:'Länk skickad! Kolla din inkorg och klicka för att logga in.',
+                 da:'Link sendt! Tjek din indbakke og klik for at logge ind.' },
+        bad:   { sv:'Ange din företagsadress.', da:'Angiv din virksomhedsadresse.' },
+        logged:{ sv:'Du är inloggad – klicka för att köpa.',
+                 da:'Du er logget ind – klik for at købe.' }
+      };
+      document.addEventListener('DOMContentLoaded', ()=> {
+        document.title = COPY.title[LANG] || COPY.title.sv;
+        const h = document.getElementById('headline'); if (h) h.textContent = COPY.head[LANG] || COPY.head.sv;
+        const s = document.getElementById('send-label'); if (s) s.textContent = COPY.send[LANG] || COPY.send.sv;
+        const c = document.getElementById('cont-label'); if (c) c.textContent = COPY.cont[LANG] || COPY.cont.sv;
+        const m = document.getElementById('msg'); if (m) m.textContent = COPY.msg1[LANG] || COPY.msg1.sv;
+        window.__copy = COPY;
+      });
+    })();
+  </script>
+
+</head>
+<body>
+  <div class="layout">
+    <img src="https://digmodel.se/assets/Digmodel_Logotyp (60pt_Tagline) Inverted.svg" alt="Digmodel logotyp" />
+    <h2 id="headline">Logga in med e-post innan ditt köp av abonnemang</h2>
+
+    <!-- Form: ange e-post → få magic link -->
+    <form id="email-form" autocomplete="email">
+      <input id="email" type="email" placeholder="ditt@företag.se" required />
+      <button id="send-btn" type="submit" class="btn"><span id="send-label">Skicka inloggningslänk</span></button>
+      <p id="msg" class="muted hint">Ange din företagsadress så skickar vi en inloggningslänk.</p>
+    </form>
+
+    <!-- När inloggad: fortsätt till checkout -->
+    <button id="go-checkout" class="btn hidden"><span id="cont-label">Fortsätt till betalning</span></button>
+    <p id="logged-hint" class="muted hint hidden">Du är inloggad – klicka för att köpa.</p>
+  </div>
+
+  <script>
+    // Firebase init – samma app-konfig som du använder på success.html
+    (function initFirebase(){
+      const firebaseConfig = {
+        apiKey: "AIzaSyC3_O3FBoJME-5JiiYHz-8bMmjHY8R83q4",
+        authDomain: "digmodel-app-463217.firebaseapp.com",
+        projectId: "digmodel-app-463217",
+        storageBucket: "digmodel-app-463217.firebasestorage.app",
+        messagingSenderId: "784968031589",
+        appId: "1:784968031589:web:b1142c64043f72e51bd58c",
+        measurementId: "G-6BTZ999W4Z"
+      };
+      if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+      document.dispatchEvent(new Event("firebase-ready"));
+    })();
+  </script>
+
+  <script>
+    (async () => {
+      // Vänta på Firebase
+      await new Promise(r => {
+        if (window.firebase?.apps?.length) return r();
+        document.addEventListener("firebase-ready", r, { once: true });
+      });
+
+      const auth = firebase.auth();
+
+      // 🔧 VIKTIGT: Functions i rätt region (byt om din deploy är i annan region)
+      const functions = firebase.app().functions('europe-north1');
+
+      // Hämta query params
+      const qs = new URLSearchParams(location.search);
+      const priceId = qs.get("priceId");
+      const seller  = qs.get("seller") || qs.get("utm_campaign") || "";
+      const coupon  = qs.get("coupon") || "";
+      const prefill = qs.get("email")  || "";
+
+      const emailEl = document.getElementById("email");
+      const form = document.getElementById("email-form");
+      const msg = document.getElementById("msg");
+      const goBtn = document.getElementById("go-checkout");
+      const loggedHint = document.getElementById("logged-hint");
+      if (prefill) emailEl.value = prefill;
+
+      const COPY = window.__copy || {};
+      const LANG = window.__lang || 'sv';
+
+      // 1) Slutför sign-in om användaren kom via maillänken
+      if (auth.isSignInWithEmailLink(window.location.href)) {
+        try {
+          let email = localStorage.getItem("verifyEmail") || prefill || "";
+          if (!email) email = prompt(LANG==='da' ? "Angiv din e-mail for at fuldføre:" : "Ange din e-post för att slutföra:");
+          await auth.signInWithEmailLink(email, window.location.href);
+          localStorage.removeItem("verifyEmail");
+        } catch (e) {
+          console.warn("SignInWithEmailLink misslyckades:", e);
+        }
+      }
+
+      // 2) När inloggad → visa “Fortsätt till betalning”
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          form.classList.add("hidden");
+          goBtn.classList.remove("hidden");
+          loggedHint.classList.remove("hidden");
+          loggedHint.textContent = (COPY.logged?.[LANG] || COPY.logged?.sv || loggedHint.textContent);
+        }
+      });
+
+      // 3) Skicka magic link
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const email = (emailEl.value || "").trim();
+
+        // (valfritt) kräva företagsdomän
+        if (/@(gmail|hotmail|outlook|yahoo)\./i.test(email)) {
+          msg.textContent = (COPY.bad?.[LANG] || COPY.bad?.sv || "Ange din företagsadress.");
+          return;
+        }
+
+        const continueUrl = location.origin + location.pathname + location.search; // behåll priceId/seller/coupon
+        try {
+          await auth.sendSignInLinkToEmail(email, { url: continueUrl, handleCodeInApp: true });
+          localStorage.setItem("verifyEmail", email);
+          msg.textContent = (COPY.sent?.[LANG] || COPY.sent?.sv || "Länk skickad! Kolla din inkorg.");
+        } catch (err) {
+          console.error(err);
+          msg.textContent = "Tekniskt fel – försök igen.";
+        }
+      });
+
+      // 4) Vidare till Stripe Checkout (med token-refresh + region)
+      goBtn.addEventListener("click", async () => {
+        try {
+          const user = firebase.auth().currentUser;
+          if (!user) {
+            alert("Du är inte inloggad ännu. Klicka på länken i mejlet igen.");
+            return;
+          }
+          if (!priceId) {
+            alert("Saknar priceId i URL:en. Gå tillbaka till prissidan och klicka köp igen.");
+            return;
+          }
+
+          // Säkerställ färsk ID-token
+          await user.getIdToken(true);
+
+          const createCheckoutSession = functions.httpsCallable("createCheckoutSession");
+
+          console.log("[verify] createCheckoutSession", { priceId, seller, coupon });
+
+          const res = await createCheckoutSession({
+            priceId,
+            seller,
+            coupon,
+            successUrl: location.origin + "/success",
+            cancelUrl:  location.origin + "/pricing"
+          });
+
+          const url = res?.data?.url;
+          if (!url) {
+            console.error("createCheckoutSession svar saknar url:", res);
+            alert("Kunde inte starta betalning (saknar URL). Kontrollera Cloud Function-loggarna.");
+            return;
+          }
+
+          window.location.href = url;
+
+        } catch (e) {
+          console.error("createCheckoutSession error:", e);
+          alert("Kunde inte starta betalning: " + (e?.message || e?.code || "Okänt fel"));
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

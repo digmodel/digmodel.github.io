@@ -1,0 +1,504 @@
+﻿﻿﻿<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Digmodel erbjuder högupplösta terrängmodeller och öppen digital information från statliga myndigheter. Ladda enkelt ner och integrera produkten med er digitala arbetsprocess">
+  <meta name="keywords" content="terrängmodell, GIS, 3D-modellering, kartdata, höjddata, Digmodel">
+  <meta name="author" content="Digmodel AB">
+  <meta property="og:title" content="Digmodel - Digitala terrängmodeller och öppen data">
+  <meta property="og:description" content="Ladda ner högkvalitativ terrängdata för analys och simulering.">
+  <meta property="og:image" content="https://digmodel.se/assets/images/og-image.jpg">
+  <meta property="og:url" content="https://digmodel.se">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://digmodel.se/download/">
+  <title>Digmodel - Terrängmodeller & öppen geodata under Creative Common licens</title>
+
+  <!-- FirebaseUI CSS (JS laddas längre ned efter Firebase SDK) -->
+  <link rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.2/firebase-ui-auth.css" />
+
+  <!-- ✅ Favicons -->
+  <link rel="icon" type="image/svg+xml" href="https://digmodel.se/assets/Favicon_Light.svg" media="(prefers-color-scheme: light)">
+  <link rel="icon" type="image/svg+xml" href="https://digmodel.se/assets/Favicon_Dark.svg" media="(prefers-color-scheme: dark)">
+  <link rel="icon" type="image/svg+xml" href="https://digmodel.se/assets/Favicon_Light.svg"> <!-- fallback -->
+
+  <!-- Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+  <!-- Leaflet CSS + Draw -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Digmodel AB",
+    "url": "https://digmodel.se",
+    "logo": "https://digmodel.se/assets/images/Symbol_tagline_inverted.svg",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "08-123 45 67",
+      "contactType": "customer service",
+      "email": "info@digmodel.se",
+      "areaServed": "SE"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Storgatan 123",
+      "addressLocality": "Stockholm",
+      "postalCode": "123 45",
+      "addressCountry": "SE"
+    },
+    "sameAs": [
+      "https://www.instagram.com/digmodel.se",
+      "https://www.youtube.com/@DigmodelSE",
+      "https://www.facebook.com/people/Digmodel/61568322969929/"
+    ]
+  }
+  </script>
+
+  <!-- Din CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- SEO-innehåll för Googlebot -->
+  <header class="sr-only">
+    <h1>Nedladdning av högupplösta terrängmodeller och öppen geodata</h1>
+    <p>Digmodel AB erbjuder fri nedladdning av lidarbaserad terrängdata och kartunderlag från svenska myndigheter. Verktyget stödjer 3D-modellering och GIS-användning i hela landet.</p>
+  </header>
+
+  <!-- Blocker & blur -->
+  <div id="map-blocker" class="fixed inset-0 backdrop-blur-md bg-white/40 z-[9998] hidden"></div>
+
+  <!-- 🔐 Inloggningsmodul (FirebaseUI) -->
+  <div id="login-modal"
+       class="fixed inset-0 z-[10000] flex items-center justify-center hidden"
+       style="background-color: rgba(0,0,0,0.6);"
+       role="dialog" aria-modal="true" aria-labelledby="login-title">
+    <div class="p-8 rounded-lg w-full max-w-md shadow-lg flex flex-col items-center" style="background-color:#002235; color:#ffffff;">
+      <h2 id="login-title" class="text-2xl font-bold text-center mb-6">Logga in</h2>
+      <!-- Här ritar FirebaseUI in hela inloggningsflödet -->
+      <div id="firebaseui-auth-container"></div>
+      <!-- Valfritt statusmeddelande -->
+      <p id="status" class="text-sm text-center mt-4" style="color:#A3A3A3;"></p><!-- I din befintliga #login-modal, längst ner under statusraden: -->
+<p class="text-sm text-center mt-4" style="color:#A3A3A3;">
+  Har du inget konto?
+  <a href="#" id="open-register-link" class="underline">Skapa konto</a>
+</p>
+
+    </div>
+  </div>
+  
+  <!-- 🆕 Registreringsmodal -->
+<div id="register-modal"
+     class="fixed inset-0 z-[10000] flex items-center justify-center hidden"
+     style="background-color: rgba(0,0,0,0.6);"
+     role="dialog" aria-modal="true" aria-labelledby="register-title">
+  <div class="p-8 rounded-lg w-full max-w-md shadow-lg flex flex-col items-center" style="background-color:#002235; color:#ffffff;">
+    <h2 id="register-title" class="text-2xl font-bold text-center mb-6">Skapa konto</h2>
+
+    <form id="register-form" class="space-y-4" novalidate style="width:100%; display:flex; flex-direction:column; align-items:center;">
+      <input id="reg-email" type="email" required placeholder="E-postadress"
+             style="color:#000000; border-radius:6px; padding-left:calc(1rem + 5px); padding-right:calc(1rem + 5px);" class="w-full max-w-xs px-4 py-2 rounded bg-[#022c46] placeholder-gray-400 outline-none" />
+
+      <input id="reg-pass" type="password" required placeholder="Lösenord"
+             style="color:#000000; border-radius:6px; padding-left:calc(1rem + 5px); padding-right:calc(1rem + 5px);" class="w-full max-w-xs px-4 py-2 rounded bg-[#022c46] placeholder-gray-400 outline-none" />
+
+      <input id="reg-pass2" type="password" required placeholder="Lösenord (igen)"
+             style="color:#000000; border-radius:6px; padding-left:calc(1rem + 5px); padding-right:calc(1rem + 5px);" class="w-full max-w-xs px-4 py-2 rounded bg-[#022c46] placeholder-gray-400 outline-none" />
+
+      <ul class="text-xs leading-5" style="color:#A3A3A3; list-style:disc; padding-left:1.25rem;">
+        <li>Minst 8 tecken</li>
+        <li>Minst en versal (A–Z)</li>
+        <li>Minst en siffra (0–9)</li>
+        <li>Minst ett specialtecken (!@#…)</li>
+      </ul>
+
+      <button id="register-btn" type="submit"
+              class="w-full max-w-xs py-2 rounded font-semibold hover:opacity-90 transition"
+              style="background-color:#2BC6D6; color:#002235; border-radius:6px; padding-left:21px; padding-right:21px;">
+        Skapa konto
+      </button>
+
+      <p id="register-status" class="text-sm text-center" style="color:#A3A3A3;"></p>
+    </form>
+
+    <p class="text-sm text-center mt-4" style="color:#A3A3A3;">
+      Har du redan konto?
+      <a href="#" id="open-login-link" class="underline">Logga in</a>
+    </p>
+  </div>
+</div>
+
+
+  <div class="webpage-frame">
+    <main class="main-content">
+      <div class="map-wrapper">
+        <div class="map-container" role="application" aria-label="Interaktiv karta för val av terrängområde">
+          <div id="map"><div id="area-label"></div></div>
+
+          <div class="map-controls-wrapper">
+            <div class="logo-container">
+              <img src="https://digmodel.se/assets/Symbol_tagline_inverted.svg" alt="Digmodel logotyp" class="logo">
+              <div class="subscription-info">Abonnemang: <strong id="sub-role">-</strong></div>
+            </div>
+
+            <div class="spacing"></div>
+
+            <div class="map-overlay-container">
+              <div id="search-container" role="search">
+                <label for="search" class="visually-hidden">Sök efter adress</label>
+                <input type="text" id="search" list="suggestions" placeholder="Sök efter adress" aria-label="Sök efter adress" autocomplete="off">
+                <img src="https://digmodel.se/assets/Location_Dark.svg" alt="" class="search-icon" aria-hidden="true">
+                <datalist id="suggestions"></datalist>
+              </div>
+
+            <div class="map-controls" role="group" aria-label="Kartkontroller">
+              <div class="crs-control">
+                <button type="button"
+                        id="crs-button"
+                        class="control-button"
+                        aria-label="Origo"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        aria-controls="crs-options"
+                        data-crs="origo">
+                  <img src="https://digmodel.se/assets/Origo_Dark.svg" alt="Origo ikon">
+                  <span class="control-label" style="top:-20px;">Origo</span>
+                </button>
+                <div id="crs-options" class="crs-options" role="listbox" aria-labelledby="crs-button">
+                  <button type="button" class="crs-option" role="option" data-value="3006" aria-selected="false" tabindex="-1">Nationellt</button>
+                  <button type="button" class="crs-option" role="option" data-value="local" aria-selected="false" tabindex="-1">Lokalt</button>
+                </div>
+              </div>
+              <button id="toggle-dxf" class="control-button" aria-label="DXF">
+                <img src="https://digmodel.se/assets/DFX_Dark.svg" alt="DXF ikon">
+                <span class="control-label" style="top:-20px;">Addera DXF till export</span>
+              </button>
+              <button class="control-button" aria-label="Download" id="download-button">
+                <img src="https://digmodel.se/assets/Download_Dark.svg" alt="Download ikon">
+                <span class="control-label" style="top:-20px;">Ladda ner</span>
+              </button>
+            </div>
+
+              <!-- ✅ Abonnemangsruta -->
+<div id="billing" class="billing-box" aria-live="polite">
+
+  <!-- Free-knappar -->
+  <button id="upgrade-month" type="button" class="billing-btn btn-primary hidden">
+    Premium 
+  </button>
+
+  <button id="upgrade-year" type="button" class="billing-btn btn-primary hidden">
+    Premium year
+  </button>
+
+  <!-- Premium / Premium_year -->
+  <button id="manage-sub" type="button" class="billing-btn btn-primary hidden">
+    Hantera abonnemang
+  </button>
+
+  <!-- Logout alltid när inloggad+verifierad -->
+  <button id="logout-btn" type="button" class="control-button hidden" aria-label="Logga ut" title="Logga ut">
+    <img src="https://digmodel.se/assets/Logout_Dark.svg" alt="Logga ut ikon" class="icon-24">
+    <span class="control-label">Logga ut</span>
+  </button>
+</div>
+
+
+
+            <div id="scale-line-target"></div>
+          </div>
+        </div></div> 
+
+        <section class="how-it-works">
+          <h1>Hur det fungerar</h1>
+          <div class="cards-container">
+            <article class="info-card">
+              <div class="card-number">1</div>
+              <h2>Välj område</h2>
+              <p>Använd sökfunktionen för att hitta ditt område eller navigera direkt i kartan. Rita en ruta runt det område du vill ladda ner.</p>
+            </article>
+            <article class="info-card">
+              <div class="card-number">2</div>
+              <h2>Exportera data</h2>
+              <p>Klicka på exportknappen för att ladda ner terrängdata för det valda området. Datan levereras i ett lättanvänt format.</p>
+            </article>
+            <article class="info-card">
+              <div class="card-number">3</div>
+              <h2>Använd data</h2>
+              <p>Importera den nedladdade datan i ditt favoritprogram för 3D-modellering eller GIS-analys.</p>
+            </article>
+          </div>
+        </section>
+
+        <!-- Info Section -->
+        <section class="info-section" aria-label="Kontakt och Om Digmodel">
+          <div class="info-container">
+            <div class="info-column">
+              <h2 class="info-heading" data-i18n="info.contact.title">Kontakt</h2>
+              <address>
+                <p data-i18n="info.contact.org">Organisationsnummer: 559530-4030</p>
+                <p data-i18n="info.contact.address">Adress: Kärragårdsvägen 57, 507 33 Brämhult</p>
+                <p>Tel: <a href="tel:+46767089883" data-i18n="info.contact.phone">+46 767089883</a></p>
+                <p>Email: <a href="mailto:support@digmodel.se" data-i18n="info.contact.email">support@digmodel.se</a></p>
+              </address>
+              <h2 class="info-heading" data-i18n="info.service.title">Tjänstens omfattning</h2>
+              <p data-i18n="info.service.p1">Digmodel tillhandahåller digitala terrängmodeller och ortofoton baserade på officiella geodata. Tjänsten är rikstäckande i Danmark och Sverige med undantag av vissa delar av Norrland.</p>
+            </div>
+
+            <div class="info-column">
+              <h2 class="info-heading" data-i18n="info.datatype.title">Datatyp och källhänvisning</h2>
+              <address>
+                <p class="info-subtitle" data-i18n="info.data.se.title">Svensk data</p>
+                <p data-i18n="info.data.se.ortho">Ortofoto © Lantmäteriet – används enligt Användningsvillkor för värdefulla datamängder</p>
+                <p data-i18n="info.data.se.laser">Laserdata © Lantmäteriet, CC BY 4.0</p>
+                <p class="info-subtitle" data-i18n="info.data.dk.title">Dansk data</p>
+                <p data-i18n="info.data.dk.ortho">Ortofoto © GeoDanmark, CC BY 4.0</p>
+                <p data-i18n="info.data.dk.laser">Laserdata © Styrelsen for Dataforsyning och Infrastruktur (SDFI), CC BY 4.0.</p>
+              </address>
+            </div>
+
+            <div class="info-column">
+              <h2 class="info-heading" data-i18n="info.about.title">Om Digmodel</h2>
+              <p data-i18n="info.about.p1">Digmodel AB erbjuder tjänster som minskar riskerna och sänker trösklarna för implementering av digitalisering och öppen data inom arkitektur och samhällsbyggnad.</p>
+              <p data-i18n="info.about.p2">Bolagets långsiktiga mål är att distribuera säker öppen data som en grund för innovation och utveckling. Med en innovativ "OpenData-OpenAI"-affärsmodell ska verksamheten främja framtida digitalisering och hållbarhetsarbete.</p>
+              <p><span data-i18n="info.about.p3.part1">Digmodel AB är en del av</span>
+                <a href="https://cloud.google.com/startup" class="google-startup-link">Google for Startups Cloud Program</a>,
+                <span data-i18n="info.about.p3.part2">vilket ger oss stöd i att växa och leverera säkra, skalbara lösningar.</span>
+              </p>
+              <a href="https://digmodel.se/om-oss/" class="learn-more-link" data-i18n="info.about.cta">
+                Läs mer om Digmodel <span class="learn-more-arrow"></span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Footer Section -->
+        <footer class="footer-section">
+          <div class="webpage-container">
+            <div class="footer-container">
+              <div class="footer-left" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                <img src="https://digmodel.se/assets/Symbol_inverted.svg"
+                     alt="Logotyp i sidfoten"
+                     style="height: 32px;"
+                     data-i18n-attr="alt:footer.logoAlt" />
+                <p style="margin: 0;">
+                  ©2025 Digmodel AB.
+                  <span data-i18n="footer.rights">Alla rättigheter förbehållna.</span>
+                  <a href="/integritetspolicy.html"
+                     style="margin-left: 8px; color: white; text-decoration: underline;"
+                     data-i18n="footer.privacy">Integritetspolicy</a>
+                </p>
+              </div>
+
+              <div class="footer-right">
+                <a href="https://www.linkedin.com/company/digmodel/about/" class="social-icon">
+                  <img src="https://digmodel.se/assets/Icon_linkedin_dark.svg" alt="LinkedIn">
+                </a>
+                <a href="https://www.youtube.com/@DigmodelSE" class="social-icon">
+                  <img src="https://digmodel.se/assets/Icon_youtube_dark.svg" alt="YouTube">
+                </a>
+                <a href="https://www.instagram.com/digmodelse?igsh=OHBqdzdwNDV2OHN1&utm_source=qr" class="social-icon">
+                  <img src="https://digmodel.se/assets/Icon_instagram_dark.svg" alt="Instagram">
+                </a>
+                <a href="https://www.facebook.com/people/Digmodel/61568322969929/" class="social-icon">
+                  <img src="https://digmodel.se/assets/Icon_facebook_dark.svg" alt="Facebook">
+                </a>
+                <a href="https://x.com/digmodelSE" class="social-icon">
+                  <img src="https://digmodel.se/assets/Icon_x_dark.svg" alt="X">
+                </a>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </main>
+  </div>
+
+  <!-- 🎉 Välkomst-popup (lägg under login-modal i z-index) -->
+  <div id="welcome-popup" class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 hidden">
+    <div style="background-color: #002235; color: #ffffff;" class="p-8 rounded shadow-lg max-w-md w-full text-center space-y-4">
+      <h2 class="text-2xl font-bold" style="color: #ffffff;"> Välkommen till Digmodel!</h2>
+      <p style="color: #A3A3A3;">
+        Du har nu tillgång till 5 kostnadsfria nedladdningar upp till <strong style="color:#ffffff;">100×100 m</strong>.
+      </p>
+      <p style="color: #A3A3A3;">
+        Vill du få tillgång till <strong style="color:#ffffff;">500×500 m</strong>? Uppgradera till Premium för 295 kr/mån.
+      </p>
+      <div class="flex justify-center gap-4">
+        <button id="go-premium"
+          class="px-4 py-2 rounded font-semibold hover:opacity-90 transition"
+          style="background-color: #2BC6D6; color: #002235;">
+          Skaffa premium
+        </button>
+        <button id="continue-free"
+          class="px-4 py-2 rounded font-semibold hover:opacity-90 transition"
+          style="background-color: #545454; color: #ffffff;">
+          Fortsätt gratis
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="processing-message" style="
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: sans-serif;
+    background: #f0f0f0;
+    color: #002235;
+    padding: 12px 18px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    z-index: 9997;
+  ">
+    Bearbetar terrängmodell...
+  </div>
+
+  <!-- JS-bibliotek -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+
+  <!-- Proj4JS och proj4leaflet -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.8.0/proj4.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4leaflet/1.0.2/proj4leaflet.min.js"></script>
+
+  <!-- Firebase SDK (måste ligga före FirebaseUI JS) -->
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-functions-compat.js"></script>
+
+  <!-- FirebaseUI JS (efter Firebase SDK) -->
+  <script src="https://www.gstatic.com/firebasejs/ui/6.0.2/firebase-ui-auth.js"></script>
+
+  <!-- Stripe -->
+  <script src="https://js.stripe.com/v3/"></script>
+
+  <!-- Din Firebase-initiering (emitterar 'firebase-ready') -->
+  <script src="config.js"></script>
+
+  <!-- Din app-logik (med FirebaseUI-start och övrig logik) -->
+  <script src="script.js"></script>
+ 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const loginModal     = document.getElementById('login-modal');
+  const registerModal  = document.getElementById('register-modal');
+  const mapBlocker     = document.getElementById('map-blocker');
+  const statusLoginEl  = document.getElementById('status');
+  const regStatusEl    = document.getElementById('register-status');
+
+  function showLogin(msg="") {
+    if (statusLoginEl) statusLoginEl.textContent = msg;
+    registerModal?.classList.add('hidden');
+    loginModal?.classList.remove('hidden');
+    mapBlocker?.classList.remove('hidden');
+  }
+  function showRegister(msg="") {
+    if (regStatusEl) regStatusEl.textContent = msg;
+    loginModal?.classList.add('hidden');
+    registerModal?.classList.remove('hidden');
+    mapBlocker?.classList.remove('hidden');
+  }
+  function hideAuth() {
+    loginModal?.classList.add('hidden');
+    registerModal?.classList.add('hidden');
+    mapBlocker?.classList.add('hidden');
+  }
+
+  // Växla modaler
+  document.getElementById('open-register-link')?.addEventListener('click', (e) => {
+    e.preventDefault(); showRegister("");
+  });
+  document.getElementById('open-login-link')?.addEventListener('click', (e) => {
+    e.preventDefault(); showLogin("");
+  });
+
+  // === Registrering ===
+  const regForm  = document.getElementById('register-form');
+  const regEmail = document.getElementById('reg-email');
+  const regPass  = document.getElementById('reg-pass');
+  const regPass2 = document.getElementById('reg-pass2');
+
+  function validPassword(pw) {
+    return (
+      pw?.length >= 8 &&
+      /[A-Z]/.test(pw) &&
+      /\d/.test(pw) &&
+      /[^A-Za-z0-9]/.test(pw)
+    );
+  }
+
+  function passwordsMatch(p1, p2) {
+    return p1 === p2;
+  }
+
+  regForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    regStatusEl.textContent = "";
+
+    const email = regEmail.value.trim();
+    const pw1   = regPass.value;
+    const pw2   = regPass2.value;
+
+    if (!passwordsMatch(pw1, pw2)) {
+      regStatusEl.textContent = t('error_pw_mismatch');
+      return;
+    }
+    if (!validPassword(pw1)) {
+      regStatusEl.textContent = t('error_pw_invalid');
+      return;
+    }
+
+    try {
+      const { user } = await firebase.auth().createUserWithEmailAndPassword(email, pw1);
+      try { await user.sendEmailVerification(); } catch {}
+      // ⚠️ Viktigt: undvik auto-inloggning som stänger modalen
+      await firebase.auth().signOut();
+      // Visa login med tydligt meddelande
+      showLogin(t('register_verify_notice'));
+    } catch (err) {
+      console.warn(err);
+      const code = err?.code || "";
+      if (code === "auth/email-already-in-use") {
+        regStatusEl.textContent = t('error_register_email_in_use');
+      } else if (code === "auth/invalid-email") {
+        regStatusEl.textContent = t('error_register_invalid_email');
+      } else if (code === "auth/weak-password") {
+        regStatusEl.textContent = t('error_register_weak_password');
+      } else if (code === "auth/network-request-failed") {
+        regStatusEl.textContent = t('error_register_network');
+      } else {
+        regStatusEl.textContent = t('error_register_generic');
+      }
+    }
+  });
+
+  // === Auth-state: släpp bara in när verifierad ===
+  firebase.auth().onAuthStateChanged(async (user) => {
+    if (!user) { showLogin(""); return; }
+    try { await user.reload(); } catch {}
+    if (user.emailVerified) {
+      hideAuth(); // visa kartan
+    } else {
+      showLogin("Verifiera din e-post för att använda tjänsten.");
+    }
+  });
+});
+</script>
+
+  
+</body>
+</html>
+
+
+
+
+
+

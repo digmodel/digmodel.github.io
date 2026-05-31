@@ -1,78 +1,529 @@
-<!doctype html>
-<html lang="sv">
+<!DOCTYPE html>
+<html lang="sv-SE">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Test Frontend</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <header class="site-header">
-      <nav class="navbar" aria-label="Huvudmeny">
-        <a class="brand" href="#top" aria-label="Till startsidan">Frontend Test</a>
-        <div class="nav-links">
-          <a href="#features">Funktioner</a>
-          <a href="#preview">Förhandsvisning</a>
-          <a href="#contact">Kontakt</a>
-        </div>
-      </nav>
-    </header>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title id="meta-title">Digmodel AB – Ladda ner digitala terrängmodeller och öppen geodata</title>
+    <meta id="meta-desc" name="description" content="Digmodel AB är en digital plattform som förenklar åtkomst till högupplösta terrängmodeller och öppen geodata från statliga myndigheter" />
 
-    <main id="top">
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-content">
-          <p class="eyebrow">Ny testvy</p>
-          <h1 id="hero-title">En enkel startsida för projektets frontend</h1>
-          <p class="hero-text">
-            Den här sidan är skapad som en lättviktig HTML- och CSS-bas för att snabbt kunna testa
-            layout, färger och responsiv design i webbläsaren.
-          </p>
-          <div class="hero-actions">
-            <a class="button primary" href="#preview">Se demo</a>
-            <a class="button secondary" href="#features">Läs mer</a>
+<!-- 🔍 META-INFORMATION FÖR SEO -->
+<meta name="keywords" content="terrängmodell, DTM, höjdmodell, DEM, lidar, geodata, nedladdning, 3D, 3D-modellering, GIS, öppna data, arkitektur, samhällsplanering, Digmodel AB">
+<meta name="author" content="Digmodel AB">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://digmodel.se/">
+
+<!-- 📱 OPEN GRAPH (Facebook, LinkedIn, m.fl.) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Digmodel AB">
+<meta id="og-locale" property="og:locale" content="sv_SE">
+<meta property="og:url" content="https://digmodel.se/">
+<meta id="og-title" property="og:title" content="Digmodel AB – Ladda ner digitala terrängmodeller och öppna data">
+<meta id="og-desc" property="og:description" content="Digitala terrängmodeller och öppna data för arkitektur och planering. Bygg din 3D-miljö effektivt.">
+<meta property="og:image" content="https://digmodel.se/assets/og-image-1200x630.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Digmodel AB – Digitala terrängmodeller och öppna data">
+
+<!-- 🐦 TWITTER CARD -->
+<meta name="twitter:card" content="summary_large_image">
+<meta id="tw-title" name="twitter:title" content="Digmodel AB – Ladda ner digitala terrängmodeller och öppna data">
+<meta id="tw-desc" name="twitter:description" content="Digmodel förenklar åtkomst till terrängdata och öppna data för 3D-applikationer. För arkitekter och samhällsplanerare.">
+<meta name="twitter:image" content="https://digmodel.se/assets/og-image-1200x630.png">
+<meta name="twitter:image:alt" content="Digmodel AB – Digitala terrängmodeller och öppna data">
+
+
+
+<!-- 📊 STRUKTURDATA – ORGANIZATION + SERVICE -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Digmodel AB",
+  "url": "https://digmodel.se",
+  "logo": "https://digmodel.se/assets/Digmodel_Logotyp_Symbol.svg",
+  "identifier": "559530-4030",
+  "email": "support@digmodel.se",
+  "telephone": "+46 767089883",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Kärragårdsvägen 57",
+    "postalCode": "507 33",
+    "addressLocality": "Brämhult",
+    "addressRegion": "Västra Götaland",
+    "addressCountry": "SE"
+  },
+  "contactPoint": [
+    {
+      "@type": "ContactPoint",
+      "telephone": "+46 767089883",
+      "contactType": "kundservice",
+      "email": "support@digmodel.se",
+      "areaServed": "SE",
+      "availableLanguage": ["sv","en","da"]
+    }
+  ],
+  "sameAs": [
+    "https://www.instagram.com/DigmodelSE/",
+    "https://www.youtube.com/@DigmodelSE",
+    "https://www.facebook.com/people/Digmodel/61568322969929/",
+    "https://www.tiktok.com/@digmodel"
+  ],
+  "makesOffer": {
+    "@type": "Offer",
+    "itemOffered": {
+      "@type": "Service",
+      "name": "Digital distribution av terräng- och geodata",
+      "description": "Digmodel AB tillhandahåller digitala tjänster för nedladdning och analys av öppna data, inklusive LiDAR, höjddata och karttjänster. Plattformen riktar sig till yrkesverksamma inom arkitektur, stadsutveckling och samhällsplanering och möjliggör automatiserad åtkomst till grunddata för 3D-modellering och GIS-analys.",
+      "inLanguage": "sv-SE",
+      "areaServed": {
+        "@type": "GeoCircle",
+        "geoMidpoint": { "@type": "GeoCoordinates", "latitude": 57.7210, "longitude": 12.9401 },
+        "geoRadius": 500000
+      },
+      "audience": {
+        "@type": "Audience",
+        "audienceType": ["Arkitektkontor", "Stadsplanerare", "Byggentreprenörer", "GIS-ingenjörer"]
+      },
+      "provider": { "@type": "Organization", "name": "Digmodel AB" }
+    },
+    "priceCurrency": "SEK",
+    "eligibleRegion": "SE",
+    "availability": "https://schema.org/InStock"
+  }
+}
+</script>
+
+<!-- ✅ Favicons från lokal asset-mapp -->
+<link rel="icon" type="image/svg+xml" href="https://digmodel.se/assets/Favicon_Light.svg" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/svg+xml" href="https://digmodel.se/assets/Favicon_Dark.svg" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/svg+xml" href="https://digmodel.se/assets/Favicon_Light.svg"> <!-- fallback -->
+
+
+<!-- Fonts & stylesheets -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Stylesheets -->
+<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+    
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js"></script>
+
+<script>
+const firebaseConfig = {
+apiKey: "DIN_API_KEY",
+authDomain: "din-app.firebaseapp.com",
+projectId: "din-app",
+storageBucket: "din-app.appspot.com",
+messagingSenderId: "XXXXXX",
+appId: "DIN_APP_ID"
+};
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+</script>
+    
+</head>
+
+
+<body>
+<!-- Skip to content for keyboard users -->
+<a href="#main-content" class="skip-link">Hoppa till innehåll</a>
+<div class="webpage-frame">
+
+  <!-- Global Navbar -->
+<header class="navbar">
+  <a href="https://digmodel.se/" class="logo-link" aria-label="Digmodel AB startsida">
+    <img src="https://digmodel.se/assets/Digmodel_Logotyp (60pt_Tagline) Inverted.svg" alt="Digmodel AB logotyp med tagline" class="logo" />
+  </a>
+
+<nav class="menu-container" aria-label="Huvudmeny" data-i18n-attr="aria-label:nav.label">
+
+  <!-- Språkväxlare -->
+    <div class="lang-switcher" role="group" aria-label="Språk" data-i18n-attr="aria-label:lang.group">
+    <button type="button"
+            class="lang-btn is-active"
+            data-lang="sv"
+            aria-pressed="true"
+            title="Byt till svenska"
+            aria-label="Svenska"
+            data-i18n-attr="title:lang.sv.title, aria-label:lang.sv.label">sv</button>
+    <span class="lang-separator" aria-hidden="true">|</span>
+    <button type="button"
+            class="lang-btn"
+            data-lang="da"
+            aria-pressed="false"
+            title="Byt till danska"
+            aria-label="Danska"
+            data-i18n-attr="title:lang.da.title, aria-label:lang.da.label">dk</button>
+  </div>
+
+  <!-- Vanliga länkar -->
+  <a href="https://digmodel.se/om-oss/" data-i18n="nav.about">Om oss</a>
+  <a href="https://digmodel.se/download/" class="sign-in" data-i18n="nav.cta">Kom igång</a>
+</nav>
+</header>
+    
+<!-- Hero Section -->
+<section class="hero-section" aria-label="Hero">
+    <div class="hero-content vision-content">
+      <h1 data-i18n="hero.title">Digitala terrängmodeller och ortofoton för arkitektur och samhällsplanering</h1>
+      <h2 data-i18n="hero.subtitle">Grundunderlag för tidiga skeden utvecklat för arkitekter, planerare och byggaktörer. Enkel åtkomst till öppen data som stödjer hållbara beslut inom byggnation och stadsutveckling</h2>
+      <p class="full-coverage-text" data-i18n="hero.coverage">Tillgängligt i Sverige och Danmark</p>
+    </div>
+</section>
+
+<main id="main-content">
+  <!-- CTA Section -->
+  <section class="cta-section" aria-label="Ladda ner CTA">
+    <div>
+    <h3 data-i18n="cta.heading">Ladda ner din terrängmodell gratis!</h3>
+      <a href="https://digmodel.se/download/" class="cta-outline-button">
+        <span class="cta-text" data-i18n="cta.button">Ladda ner</span>
+        <span class="cta-icon">
+          <img src="https://digmodel.se/assets/Icon_download.svg" alt="Nedladdningsikon" width="16" height="22" data-i18n-attr="alt:cta.iconAlt">
+        </span>
+      </a>
+    </div>
+  </section>
+
+<!-- Animation Video Section -->
+<section class="animation-video-section" aria-label="Introduktionsvideo">
+  <video id="scrollVideo" class="animation-video" muted playsinline preload="auto" loop="false">
+    <source src="https://digmodel.se/assets/Animation.mp4" type="video/mp4">
+    Din webbläsare stöder inte video-taggen.
+  </video>
+</section>
+
+<!-- Problemet vi löser -->
+<section class="problem-section" aria-label="Problemet vi löser">
+  <div class="download-text-container">
+    <h2 data-i18n="problem.heading">Svårt att hitta tillförlitliga data eller platsinformation i dina tidiga processer?</h2>
+    <p data-i18n="problem.body">Att få tag på tillförlitliga data eller platsinformation ska inte vara svårt. Långa ledtider, tekniska hinder och dyra konsultinsatser gör att öppna data blir svåra att använda. Att söka, förstå och konvertera tar tid och bromsar projekt redan i starten. Digmodel gör det enklare.
+    </p>
+  </div>
+</section>
+
+<!-- Instruction Section -->
+    <section class="instruction-section" aria-label="Så fungerar det">
+      <div class="instruction-cards-wrapper">
+        <h2 data-i18n="steps.heading">Så fungerar det</h2>
+        <br>
+      <div class="instruction-cards-container">
+        <div class="instruction-card">
+          <div class="card-number">1</div>
+          <h3 data-i18n="steps.1.title">Lokalisering och koordinater</h3>
+          <p data-i18n="steps.1.body">Välj område via sökfunktionen eller genom att navigera i kartan.</p>
+          <img src="https://digmodel.se/assets/Earth_location (rev).svg" alt="Ikon för plats och koordinater" data-i18n-attr="alt:steps.1.iconAlt">   
+        </div>
+        <div class="instruction-card">
+          <div class="card-number">2</div>
+          <h3 data-i18n="steps.2.title">Datatyp och datastorlek</h3>
+          <p data-i18n="steps.2.body">Välj datatyp och ange storlek på datasetet för nedladdning.</p>
+          <img src="https://digmodel.se/assets/Data_collection (rev).svg" alt="Ikon för datatyp och storlek" data-i18n-attr="alt:steps.2.iconAlt">
+        </div>
+        <div class="instruction-card">
+          <div class="card-number">3</div>
+          <h3 data-i18n="steps.3.title">Format och export</h3>
+          <p data-i18n="steps.3.body">Välj filformat och exportera datasetet för integrering i ditt projekt.</p>
+          <img src="https://digmodel.se/assets/Data_stacked.svg" alt="Ikon för format och export" data-i18n-attr="alt:steps.3.iconAlt">
+        </div>
+      </div>
+      </div>
+    </section>
+
+      <!-- Download Text Section -->
+    <section class="download-text-section" aria-label="Effektiv designprocess">
+      <div class="download-text-container">
+        <h2 class="download-title" data-i18n="value.title">Effektiv designprocess med korrekt data</h2>
+        <p class="download-description" data-i18n="value.body">Ladda ner, analysera och simulera med öppna data för arkitektur och samhällsplanering. Arbeta kostnadseffektivt, samarbeta smidigt mellan aktörer och minska tidiga risker för att accelerera hållbarhet.</p>
+      </div>
+    </section>
+
+    <!-- Benefit Section -->
+    <section class="benefit-section" aria-label="Fördelar">
+      <div class="benefit-cards-container">
+        <div class="benefit-card">
+          <div class="card-content">
+            <img src="https://digmodel.se/assets/Icons_costefficiency.svg" alt="Ikon för kostnadseffektivitet" data-i18n-attr="alt:benefits.cost.iconAlt">
+            <span class="benefit-card-text" data-i18n="benefits.cost.title">Kostnadseffektivt</span>
+            <ul class="benefit-list">
+              <li data-i18n="benefits.cost.items.1">Materialkostnader</li>
+              <li data-i18n="benefits.cost.items.2">Licenskostnader</li>
+              <li data-i18n="benefits.cost.items.3">Automatisering</li>
+              <li data-i18n="benefits.cost.items.4">Optimering</li>
+              <li data-i18n="benefits.cost.items.5">Resurseffektivitet</li>
+            </ul>
           </div>
         </div>
-        <aside class="hero-card" aria-label="Statuskort">
-          <span class="status-dot" aria-hidden="true"></span>
-          <h2>Frontend redo</h2>
-          <p>Statisk testsida med separerad CSS och responsiva komponenter.</p>
-        </aside>
-      </section>
 
-      <section id="features" class="section" aria-labelledby="features-title">
-        <p class="eyebrow">Innehåll</p>
-        <h2 id="features-title">Vad ingår?</h2>
-        <div class="feature-grid">
-          <article class="feature-card">
-            <h3>Responsiv layout</h3>
-            <p>Grid och flexbox gör att sidan fungerar på både mobil och större skärmar.</p>
-          </article>
-          <article class="feature-card">
-            <h3>Ren struktur</h3>
-            <p>Semantiska HTML-element gör sidan enklare att bygga vidare på.</p>
-          </article>
-          <article class="feature-card">
-            <h3>Modern stil</h3>
-            <p>CSS-variabler, tydliga kontraster och mjuka skuggor ger en enkel designgrund.</p>
-          </article>
+        <div class="benefit-card">
+          <div class="card-content">
+            <img src="https://digmodel.se/assets/Icons_network.svg" alt="Ikon för samarbete" data-i18n-attr="alt:benefits.collab.iconAlt">
+            <span class="benefit-card-text" data-i18n="benefits.collab.title">Samarbete</span>
+            <ul class="benefit-list">
+              <li data-i18n="benefits.collab.items.1">Kunskapsdelning</li>
+              <li data-i18n="benefits.collab.items.2">Effektivt samarbete</li>
+              <li data-i18n="benefits.collab.items.3">Starkare partnerskap</li>
+              <li data-i18n="benefits.collab.items.4">Snabbare beslut</li>
+              <li data-i18n="benefits.collab.items.5">Förbättrad kommunikation</li>
+            </ul>
+          </div>
         </div>
-      </section>
 
-      <section id="preview" class="section preview-panel" aria-labelledby="preview-title">
-        <div>
-          <p class="eyebrow">Demo</p>
-          <h2 id="preview-title">Redo att öppnas i webbläsaren</h2>
-          <p>
-            När repot är publikt publiceras frontend-mappen via GitHub Pages så att sidan kan
-            testas direkt i webbläsaren utan localhost.
-          </p>
+        <div class="benefit-card">
+          <div class="card-content">
+            <img src="https://digmodel.se/assets/Icons_security.svg" alt="Ikon för säkerhet" data-i18n-attr="alt:benefits.sec.iconAlt">
+            <span class="benefit-card-text" data-i18n="benefits.sec.title">Säkerhet</span>
+            <ul class="benefit-list">
+              <li data-i18n="benefits.sec.items.1">Stabil infrastruktur</li>
+              <li data-i18n="benefits.sec.items.2">Säker integration</li>
+              <li data-i18n="benefits.sec.items.3">Säker information</li>
+              <li data-i18n="benefits.sec.items.4">Tillförlitlig lagring</li>
+              <li data-i18n="benefits.sec.items.5">Datasäkerhet</li>
+            </ul>
+          </div>
         </div>
-        <code>https://digmodel.github.io/</code>
-      </section>
+      </div>
+    </section>
+
+   <!-- Pricing Section -->
+<section class="pricing-section" aria-label="V&auml;lj abonnemang" data-i18n-attr="aria-label:pricing.sectionAria">
+  <div class="pricing-container">
+    <h2 class="pricing-title" data-i18n="pricing.sectionTitle">V&auml;lj abonnemang</h2>
+
+    <div class="pricing-cards">
+      <!-- FREE -->
+      <article class="pricing-card" data-plan="free">
+        <p class="pricing-label" data-i18n="pricing.cards.free.label">Mindre projekt och bygglov</p>
+        <h3 class="pricing-name" data-i18n="pricing.cards.free.name">Free</h3>
+        <p class="pricing-price">
+          <span class="pricing-amount">0 kr</span>
+          <span class="pricing-period" data-i18n="pricing.cards.free.period">/ registrering</span>
+        </p>
+        <ul class="pricing-features">
+          <li data-i18n="pricing.cards.free.features.1">Upp till <strong>3 nedladdningar</strong></li>
+          <li data-i18n="pricing.cards.free.features.2">Upp till <strong>500&times;500 m</strong></li>
+          <li data-i18n="pricing.cards.free.features.3">OBJ + PNG (grund)</li>
+          <li data-i18n="pricing.cards.free.features.4">Origo/koordinat</li>
+        </ul>
+
+        <!-- ändra: href till download/ (utan lang=sv) -->
+        <a class="pricing-cta is-outline" href="download/?plan=free" data-i18n="pricing.cards.free.cta">V&auml;lj Free</a>
+      </article>
+
+      <!-- PREMIUM -->
+      <article class="pricing-card" data-plan="premium">
+        <p class="pricing-label" data-i18n="pricing.cards.premium.label">Större projekt och stadsplanering</p>
+        <h3 class="pricing-name" data-i18n="pricing.cards.premium.name">Premium</h3>
+        <p class="pricing-price">
+          <span class="pricing-amount">495 kr</span>
+          <span class="pricing-period" data-i18n="pricing.cards.premium.period">/ m&aring;nad</span>
+        </p>
+        <ul class="pricing-features">
+          <li data-i18n="pricing.cards.premium.features.1">Upp till <strong>10 nedladdningar</strong></li>
+          <li data-i18n="pricing.cards.premium.features.2">Upp till <strong>1000&times;1000 m</strong></li>
+          <li data-i18n="pricing.cards.premium.features.3">OBJ + PNG + DXF</li>
+          <li data-i18n="pricing.cards.premium.features.4">Origo/koordinat</li>
+          <li data-i18n="pricing.cards.premium.features.5">Prioriterad support</li>
+        </ul>
+
+        <!-- ändra: premium.html -> download/ -->
+        <a class="pricing-cta is-outline" href="download/?plan=premium" data-i18n="pricing.cards.premium.cta">V&auml;lj Premium</a>
+      </article>
+
+      <!-- PREMIUM YEAR -->
+      <article class="pricing-card pricing-card-highlight" data-plan="premium_year">
+        <span class="pricing-badge" data-i18n="pricing.cards.year.badge">Popul&auml;r</span>
+        <p class="pricing-label" data-i18n="pricing.cards.year.label">F&ouml;retag och professionella</p>
+        <h3 class="pricing-name" data-i18n="pricing.cards.year.name">Premium Year</h3>
+        <p class="pricing-price">
+          <span class="pricing-amount">5&nbsp;000 kr</span>
+          <span class="pricing-period" data-i18n="pricing.cards.year.period">/ &aring;r</span>
+        </p>
+        <ul class="pricing-features">
+          <li data-i18n="pricing.cards.year.features.1"><strong>Obegr&auml;nsad antal nedladdningar</strong></li>
+          <li data-i18n="pricing.cards.year.features.2">Upp till <strong>1000&times;1000 m</strong></li>
+          <li data-i18n="pricing.cards.year.features.3">OBJ + PNG + DXF + Open data</li>
+          <li data-i18n="pricing.cards.year.features.4">Origo/koordinat</li>
+          <li data-i18n="pricing.cards.year.features.5">Prioriterad support</li>
+        </ul>
+
+        <!-- ändra: premium_year.html -> download/ -->
+        <a class="pricing-cta is-filled" href="download/?plan=premium_year" data-i18n="pricing.cards.year.cta">V&auml;lj Premium Year</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+    <!-- Logo Slider Section -->
+    <section class="logo-slider-section" aria-label="Krediter och licenser">
+      <div class="logo-slider-description">
+        <p data-i18n="credits.line">Tillhandahålls och distribueras under Creative Commons-licens</p>
+      </div>
+      <div class="logo-slider">
+        <div><img src="https://digmodel.se/assets/Lantmäteriet.png" alt="Lantmäteriet"></div>
+        <div><img src="https://digmodel.se/assets/Geodata.png" alt="Geodata"></div>
+        <div><img src="https://digmodel.se/assets/CopernicusEU.png" alt="CopernicusEU"></div>
+        <div><img src="https://digmodel.se/assets/Skogsstyrelsen.png" alt="Skogsstyrelsen"></div>
+        <div><img src="https://digmodel.se/assets/Riksantikvarie.png" alt="Riksantikvarieämbetet"></div>
+        <div><img src="https://digmodel.se/assets/SGI.png" alt="SGI"></div>
+      </div>
+    </section>
+
+    <!-- Info Section -->
+            <section class="info-section" aria-label="Kontakt och Om Digmodel">
+                <div class="info-container">
+                    <div class="info-column">
+                        <h2 class="info-heading" data-i18n="info.contact.title">Kontakt</h2>
+                        <address>
+                            <p data-i18n="info.contact.org">Organisationsnummer: 559530-4030</p>
+                            <p data-i18n="info.contact.address">Adress: Kärragårdsvägen 57, 507 33 Brämhult</p>
+                            <p>Tel: <a href="tel:+46767089883" data-i18n="info.contact.phone">+46 767089883</a></p>
+                            <p>Email: <a href="mailto:support@digmodel.se" data-i18n="info.contact.email">support@digmodel.se</a></p>
+                        </address>
+                        <h2 class="info-heading" data-i18n="info.service.title">Tjänstens omfattning</h2>
+                      <p data-i18n="info.service.p1">Digmodel tillhandahåller digitala terrängmodeller och ortofoton baserade på officiella geodata. Tjänsten är rikstäckande i Danmark och Sverige med undantag av vissa delar av Norrland.</p>
+                    </div>
+
+                                        <div class="info-column">
+                        <h2 class="info-heading" data-i18n="info.datatype.title">Datatyp och källhänvisning</h2>
+                        <address>
+                            <p class="info-subtitle" data-i18n="info.data.se.title">Svensk data</p>
+                            <p data-i18n="info.data.se.ortho">Ortofoto © Lantmäteriet – används enligt Användningsvillkor för värdefulla datamängder</p>
+                            <p data-i18n="info.data.se.laser">Laserdata © Lantmäteriet, CC BY 4.0</p>
+                            <p class="info-subtitle" data-i18n="info.data.dk.title">Dansk data</p>
+                            <p data-i18n="info.data.dk.ortho">Ortofoto © GeoDanmark, CC BY 4.0</p>
+                            <p data-i18n="info.data.dk.laser">Laserdata © Styrelsen for Dataforsyning och Infrastruktur (SDFI), CC BY 4.0.</p>
+                        </address>
+                    </div>
+
+                    <div class="info-column">
+                      <h2 class="info-heading" data-i18n="info.about.title">Om Digmodel</h2>
+                      <p data-i18n="info.about.p1">Digmodel AB erbjuder tjänster som minskar riskerna och sänker trösklarna för implementering av digitalisering och öppen data inom arkitektur och samhällsbyggnad.</p>
+                      <p data-i18n="info.about.p2">Bolagets långsiktiga mål är att distribuera säker öppen data som en grund för innovation och utveckling. Med en innovativ "OpenData-OpenAI"-affärsmodell ska verksamheten främja framtida digitalisering och hållbarhetsarbete.</p>
+                      <p><span data-i18n="info.about.p3.part1">Digmodel AB är en del av</span>
+                        <a href="https://cloud.google.com/startup" class="google-startup-link">Google for Startups Cloud Program</a>,
+                        <span data-i18n="info.about.p3.part2">vilket ger oss stöd i att växa och leverera säkra, skalbara lösningar.</span>
+                        </p>
+                      <a href="https://digmodel.se/om-oss/" class="learn-more-link" data-i18n="info.about.cta">
+                        Läs mer om Digmodel <span class="learn-more-arrow"></span>
+                      </a>
+                    </div>
+                  </div>
+            </section>
     </main>
+  
+<!-- Footer Section -->
+<footer class="footer-section">
+  <div class="webpage-container">
+    <div class="footer-container">
+      <div class="footer-left" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+        <img src="https://digmodel.se/assets/Symbol_inverted.svg"
+             alt="Logotyp i sidfoten"
+             style="height: 32px;"
+             data-i18n-attr="alt:footer.logoAlt" />
+        <p style="margin: 0;">
+          <!-- Behåll år + bolagsnamn som oförändrad text -->
+          ©2025 Digmodel AB.
+          <!-- Översätt bara rättighetsfrasen + länktexten -->
+          <span data-i18n="footer.rights">Alla rättigheter förbehållna.</span>
+          <a href="/integritetspolicy.html"
+             style="margin-left: 8px; color: white; text-decoration: underline;"
+             data-i18n="footer.privacy">Integritetspolicy</a>
+        </p>
+      </div>
 
-    <footer id="contact" class="site-footer">
-      <p>Bygg vidare härifrån när backend och frontend kopplas ihop.</p>
-    </footer>
+      <div class="footer-right">
+        <a href="https://www.linkedin.com/company/digmodel/about/" class="social-icon">
+          <img src="https://digmodel.se/assets/Icon_linkedin_dark.svg" alt="LinkedIn">
+        </a>
+        <a href="https://www.youtube.com/@DigmodelSE" class="social-icon">
+          <img src="https://digmodel.se/assets/Icon_youtube_dark.svg" alt="YouTube">
+        </a>
+        <a href="https://www.instagram.com/digmodelse?igsh=OHBqdzdwNDV2OHN1&utm_source=qr" class="social-icon">
+          <img src="https://digmodel.se/assets/Icon_instagram_dark.svg" alt="Instagram">
+        </a>
+        <a href="https://www.facebook.com/people/Digmodel/61568322969929/" class="social-icon">
+          <img src="https://digmodel.se/assets/Icon_facebook_dark.svg" alt="Facebook">
+        </a>
+        <a href="https://x.com/digmodelSE" class="social-icon">
+          <img src="https://digmodel.se/assets/Icon_x_dark.svg" alt="X">
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    </div>
+
+<!-- Cookie Popup -->
+<div class="cookie-popup" id="cookiePopup">
+  <div class="cookie-content">
+    <div class="cookie-text">
+      <h3 class="cookie-title" data-i18n="cookie.title">Cookies - digmodel.se</h3>
+      <p class="cookie-description" data-i18n="cookie.body1">
+        Vi använder cookies för att ge dig en optimal upplevelse av vår webbplats. Vissa cookies är nödvändiga för att sidan ska fungera korrekt, medan andra hjälper oss att analysera trafik, anpassa innehållet och annonser samt erbjuda sociala mediefunktioner.
+      </p>
+      <p class="cookie-description" style="margin-top: 15px;" data-i18n="cookie.body2">
+        Genom att klicka på <strong>"Acceptera alla"</strong> godkänner du att vi använder cookies enligt vår cookiepolicy. Vill du anpassa vilka cookies som aktiveras? Klicka på <strong>"Cookie-inställningar"</strong> för att göra dina val eller läsa mer i vår 
+        <a href="/integritetspolicy.html" target="_blank" rel="noopener">integritetspolicy</a>.
+      </p>
+    </div>
+    <div class="cookie-buttons">
+      <button class="cookie-btn accept-all" data-action="accept-all" data-i18n="cookie.acceptAll">Acceptera alla cookies</button>
+      <button class="cookie-btn accept-necessary" data-action="accept-necessary" data-i18n="cookie.acceptNecessary">Acceptera endast nödvändiga cookies</button>
+      <button class="cookie-btn reject-all" data-action="reject-all" data-i18n="cookie.rejectAll">Avvisa alla cookies</button>
+      <button class="cookie-btn settings" data-action="settings">
+        <img src="https://digmodel.se/assets/Cookiesettings.svg"
+     alt="Inställningar för cookies"
+     data-i18n-attr="alt:cookie.iconAlt">
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Cookie Settings Modal -->
+<div class="cookie-settings-modal" id="cookieSettingsModal" role="dialog" aria-modal="true" aria-labelledby="cookieSettingsTitle">
+  <div class="inner-wrapper">
+    <h3 id="cookieSettingsTitle" data-i18n="cookie.settingsTitle">Cookie-inställningar</h3>
+    <form id="cookieSettingsForm">
+      <label>
+        <input type="checkbox" disabled checked />
+        <span data-i18n="cookie.functional">Funktionella cookies (nödvändiga)</span>
+      </label>
+
+      <label>
+        <input type="checkbox" id="analyticsCookies" />
+        <span data-i18n="cookie.analytics">Analyscookies (Google Analytics m.m.)</span>
+      </label>
+
+      <label>
+        <input type="checkbox" id="marketingCookies" />
+        <span data-i18n="cookie.marketing">Marknadsföringscookies (t.ex. Meta, YouTube)</span>
+      </label>
+
+      <div class="modal-buttons">
+        <button type="submit" class="cookie-btn accept-all" data-i18n="cookie.save">Spara inställningar</button>
+        <button type="button" class="cookie-btn reject-all" id="closeSettings" data-i18n="cookie.cancel">Avbryt</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+  <!-- External Scripts -->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+  <script type="text/javascript" src="script.js"></script>
+  
+
   </body>
 </html>

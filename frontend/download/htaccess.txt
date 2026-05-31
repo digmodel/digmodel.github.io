@@ -1,0 +1,10 @@
+# Tvinga HTTPS för alla besökare
+RewriteEngine On
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Aktivera HSTS – säkerställ att HTTPS används även vid framtida besök
+Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+# Se till att index.html laddas som standard i mappar
+DirectoryIndex index.html

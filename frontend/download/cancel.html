@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <title>Betalning avbruten</title>
+  <style>
+
+    :root { color-scheme: light dark; }
+
+    body {
+
+      margin: 0;
+
+      min-height: 100vh;
+
+      display: flex;
+
+      flex-direction: column;
+
+      justify-content: center;
+
+      align-items: center;
+
+      background: var(--color-primary, #002235);
+
+      color: #ffffff;
+
+      font-family: var(--font-primary, 'Montserrat'), system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+
+      padding: 24px;
+
+    }
+
+    .cancel-layout {
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      gap: 16px;
+
+      text-align: center;
+
+      max-width: 600px;
+
+    }
+
+    .cancel-layout img {
+
+      max-width: 260px;
+
+      width: 100%;
+
+      height: auto;
+
+    }
+
+    .cancel-text {
+
+      margin: 0;
+
+      font-size: clamp(16px, 2vw, 20px);
+
+      line-height: 1.6;
+
+    }
+
+    .cancel-layout a {
+
+      color: #ffffff;
+
+      font-size: clamp(14px, 1.8vw, 18px);
+
+      text-decoration: underline;
+
+    }
+
+  </style>
+
+
+</head>
+<body>
+  <div class="cancel-layout">
+
+    <img src="https://digmodel.se/assets/Digmodel_Logotyp (60pt_Tagline) Inverted.svg" alt="Digmodel logotyp" />
+
+    <p id="cancel-heading" class="cancel-text">Betalning avbruten</p>
+
+    <p id="cancel-message" class="cancel-text">Du har avbrutit köpet. Vill du försöka igen?</p>
+
+    <a id="cancel-back" href="/">Tillbaka till startsidan</a>
+
+  </div>
+
+  <script>
+    (function () {
+      function detectLanguage() {
+        try {
+          const urlLang = new URLSearchParams(window.location.search).get('lang');
+          const normalize = (val) => {
+            if (!val) return null;
+            const v = String(val).toLowerCase();
+            if (v === 'dk') return 'da';
+            if (v.startsWith('da')) return 'da';
+            if (v.startsWith('sv')) return 'sv';
+            return null;
+          };
+          const fromUrl = normalize(urlLang);
+          if (fromUrl) { try { localStorage.setItem('lang', fromUrl); } catch {} return fromUrl; }
+          const keys = ['lang','language','selectedLanguage','siteLanguage'];
+          for (const k of keys) {
+            try {
+              const val = normalize(localStorage.getItem(k));
+              if (val) return val;
+            } catch {}
+          }
+          return 'sv';
+        } catch { return 'sv'; }
+      }
+
+      const I18N = {
+        sv: {
+          title: 'Betalning avbruten',
+          heading: 'Betalning avbruten',
+          text: 'Du har avbrutit köpet. Vill du försöka igen?',
+          back: 'Tillbaka till startsidan'
+        },
+        da: {
+          title: 'Betaling afbrudt',
+          heading: 'Betaling afbrudt',
+          text: 'Du har afbrudt købet. Vil du prøve igen?',
+          back: 'Tilbage til startsiden'
+        }
+      };
+
+      const lang = detectLanguage();
+      try { document.documentElement.lang = lang; } catch {}
+
+      const t = (k) => (I18N[lang] && I18N[lang][k]) || k;
+
+      document.title = t('title');
+      const heading = document.getElementById('cancel-heading'); if (heading) heading.textContent = t('heading');
+      const message = document.getElementById('cancel-message'); if (message) message.textContent = t('text');
+      const backLink = document.getElementById('cancel-back'); if (backLink) backLink.textContent = t('back');
+    })();
+  </script>
+</body>
+</html>
