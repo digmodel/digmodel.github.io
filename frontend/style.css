@@ -1,4 +1,4 @@
-﻿/* =========================
+/* =========================
    VARIABLES & BASE STYLES
    ========================= */
 :root {
@@ -178,7 +178,7 @@ button, input, select, textarea {
   width: 100%;
   max-width: var(--max-width);
   height: 100%;
-  background: url('https://digmodel.se/assets/Bakgrundsbild.webp') center/cover;
+  background: url('/assets/Bakgrundsbild.webp') center/cover;
   opacity: 0.4;
   z-index: 1;
   pointer-events: none;
@@ -1417,7 +1417,7 @@ p {
     width: 100%;
   }
 
-  .navbar img[src="https://digmodel.se/assets/Digmodel_Logotyp (60pt_Tagline) Inverted.svg"] {
+  .navbar img[src="/assets/Digmodel_Logotyp (60pt_Tagline) Inverted.svg"] {
     margin-top: 50px;
   }
 

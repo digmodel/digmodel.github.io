@@ -1,4 +1,4 @@
-﻿
+
 :root {
   --font-primary: 'Montserrat', sans-serif;
   --font-weight-light: 300;
@@ -690,7 +690,7 @@ main { display: flow-root; }
     width: 100%;
   } 
 
-    .navbar img[src="https://digmodel.se/assets/Digmodel_Logotyp (60pt_Tagline) Inverted.svg"] {
+    .navbar img[src="/assets/Digmodel_Logotyp (60pt_Tagline) Inverted.svg"] {
     margin-top: 50px;
   }
 

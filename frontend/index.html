@@ -9,7 +9,7 @@
 <!-- 🔍 META-INFORMATION FÖR SEO -->
 <meta name="keywords" content="terrängmodell, DTM, höjdmodell, DEM, lidar, geodata, nedladdning, 3D, 3D-modellering, GIS, öppna data, arkitektur, samhällsplanering, Digmodel AB">
 <meta name="author" content="Digmodel AB">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="noindex, nofollow">
 <link rel="canonical" href="https://digmodel.se/">
 
 <!-- 📱 OPEN GRAPH (Facebook, LinkedIn, m.fl.) -->
@@ -94,9 +94,9 @@
 </script>
 
 <!-- ✅ Favicons från lokal asset-mapp -->
-<link rel="icon" type="image/svg+xml" href="https://digmodel.se/assets/Favicon_Light.svg" media="(prefers-color-scheme: light)">
-<link rel="icon" type="image/svg+xml" href="https://digmodel.se/assets/Favicon_Dark.svg" media="(prefers-color-scheme: dark)">
-<link rel="icon" type="image/svg+xml" href="https://digmodel.se/assets/Favicon_Light.svg"> <!-- fallback -->
+<link rel="icon" type="image/svg+xml" href="/assets/Favicon_Light.svg" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/svg+xml" href="/assets/Favicon_Dark.svg" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/svg+xml" href="/assets/Favicon_Light.svg"> <!-- fallback -->
 
 
 <!-- Fonts & stylesheets -->
@@ -139,8 +139,8 @@ appId: "DIN_APP_ID"
 
   <!-- Global Navbar -->
 <header class="navbar">
-  <a href="https://digmodel.se/" class="logo-link" aria-label="Digmodel AB startsida">
-    <img src="https://digmodel.se/assets/Digmodel_Logotyp (60pt_Tagline) Inverted.svg" alt="Digmodel AB logotyp med tagline" class="logo" />
+  <a href="/" class="logo-link" aria-label="Digmodel AB startsida">
+    <img src="/assets/Digmodel_Logotyp (60pt_Tagline) Inverted.svg" alt="Digmodel AB logotyp med tagline" class="logo" />
   </a>
 
 <nav class="menu-container" aria-label="Huvudmeny" data-i18n-attr="aria-label:nav.label">
@@ -165,8 +165,8 @@ appId: "DIN_APP_ID"
   </div>
 
   <!-- Vanliga länkar -->
-  <a href="https://digmodel.se/om-oss/" data-i18n="nav.about">Om oss</a>
-  <a href="https://digmodel.se/download/" class="sign-in" data-i18n="nav.cta">Kom igång</a>
+  <a href="/om-oss/" data-i18n="nav.about">Om oss</a>
+  <a href="/download/" class="sign-in" data-i18n="nav.cta">Kom igång</a>
 </nav>
 </header>
     
@@ -184,10 +184,10 @@ appId: "DIN_APP_ID"
   <section class="cta-section" aria-label="Ladda ner CTA">
     <div>
     <h3 data-i18n="cta.heading">Ladda ner din terrängmodell gratis!</h3>
-      <a href="https://digmodel.se/download/" class="cta-outline-button">
+      <a href="/download/" class="cta-outline-button">
         <span class="cta-text" data-i18n="cta.button">Ladda ner</span>
         <span class="cta-icon">
-          <img src="https://digmodel.se/assets/Icon_download.svg" alt="Nedladdningsikon" width="16" height="22" data-i18n-attr="alt:cta.iconAlt">
+          <img src="/assets/Icon_download.svg" alt="Nedladdningsikon" width="16" height="22" data-i18n-attr="alt:cta.iconAlt">
         </span>
       </a>
     </div>
@@ -196,7 +196,7 @@ appId: "DIN_APP_ID"
 <!-- Animation Video Section -->
 <section class="animation-video-section" aria-label="Introduktionsvideo">
   <video id="scrollVideo" class="animation-video" muted playsinline preload="auto" loop="false">
-    <source src="https://digmodel.se/assets/Animation.mp4" type="video/mp4">
+    <source src="/assets/Animation.mp4" type="video/mp4">
     Din webbläsare stöder inte video-taggen.
   </video>
 </section>
@@ -220,19 +220,19 @@ appId: "DIN_APP_ID"
           <div class="card-number">1</div>
           <h3 data-i18n="steps.1.title">Lokalisering och koordinater</h3>
           <p data-i18n="steps.1.body">Välj område via sökfunktionen eller genom att navigera i kartan.</p>
-          <img src="https://digmodel.se/assets/Earth_location (rev).svg" alt="Ikon för plats och koordinater" data-i18n-attr="alt:steps.1.iconAlt">   
+          <img src="/assets/Earth_location (rev).svg" alt="Ikon för plats och koordinater" data-i18n-attr="alt:steps.1.iconAlt">
         </div>
         <div class="instruction-card">
           <div class="card-number">2</div>
           <h3 data-i18n="steps.2.title">Datatyp och datastorlek</h3>
           <p data-i18n="steps.2.body">Välj datatyp och ange storlek på datasetet för nedladdning.</p>
-          <img src="https://digmodel.se/assets/Data_collection (rev).svg" alt="Ikon för datatyp och storlek" data-i18n-attr="alt:steps.2.iconAlt">
+          <img src="/assets/Data_collection (rev).svg" alt="Ikon för datatyp och storlek" data-i18n-attr="alt:steps.2.iconAlt">
         </div>
         <div class="instruction-card">
           <div class="card-number">3</div>
           <h3 data-i18n="steps.3.title">Format och export</h3>
           <p data-i18n="steps.3.body">Välj filformat och exportera datasetet för integrering i ditt projekt.</p>
-          <img src="https://digmodel.se/assets/Data_stacked.svg" alt="Ikon för format och export" data-i18n-attr="alt:steps.3.iconAlt">
+          <img src="/assets/Data_stacked.svg" alt="Ikon för format och export" data-i18n-attr="alt:steps.3.iconAlt">
         </div>
       </div>
       </div>
@@ -251,7 +251,7 @@ appId: "DIN_APP_ID"
       <div class="benefit-cards-container">
         <div class="benefit-card">
           <div class="card-content">
-            <img src="https://digmodel.se/assets/Icons_costefficiency.svg" alt="Ikon för kostnadseffektivitet" data-i18n-attr="alt:benefits.cost.iconAlt">
+            <img src="/assets/Icons_costefficiency.svg" alt="Ikon för kostnadseffektivitet" data-i18n-attr="alt:benefits.cost.iconAlt">
             <span class="benefit-card-text" data-i18n="benefits.cost.title">Kostnadseffektivt</span>
             <ul class="benefit-list">
               <li data-i18n="benefits.cost.items.1">Materialkostnader</li>
@@ -265,7 +265,7 @@ appId: "DIN_APP_ID"
 
         <div class="benefit-card">
           <div class="card-content">
-            <img src="https://digmodel.se/assets/Icons_network.svg" alt="Ikon för samarbete" data-i18n-attr="alt:benefits.collab.iconAlt">
+            <img src="/assets/Icons_network.svg" alt="Ikon för samarbete" data-i18n-attr="alt:benefits.collab.iconAlt">
             <span class="benefit-card-text" data-i18n="benefits.collab.title">Samarbete</span>
             <ul class="benefit-list">
               <li data-i18n="benefits.collab.items.1">Kunskapsdelning</li>
@@ -279,7 +279,7 @@ appId: "DIN_APP_ID"
 
         <div class="benefit-card">
           <div class="card-content">
-            <img src="https://digmodel.se/assets/Icons_security.svg" alt="Ikon för säkerhet" data-i18n-attr="alt:benefits.sec.iconAlt">
+            <img src="/assets/Icons_security.svg" alt="Ikon för säkerhet" data-i18n-attr="alt:benefits.sec.iconAlt">
             <span class="benefit-card-text" data-i18n="benefits.sec.title">Säkerhet</span>
             <ul class="benefit-list">
               <li data-i18n="benefits.sec.items.1">Stabil infrastruktur</li>
@@ -368,12 +368,12 @@ appId: "DIN_APP_ID"
         <p data-i18n="credits.line">Tillhandahålls och distribueras under Creative Commons-licens</p>
       </div>
       <div class="logo-slider">
-        <div><img src="https://digmodel.se/assets/Lantmäteriet.png" alt="Lantmäteriet"></div>
-        <div><img src="https://digmodel.se/assets/Geodata.png" alt="Geodata"></div>
-        <div><img src="https://digmodel.se/assets/CopernicusEU.png" alt="CopernicusEU"></div>
-        <div><img src="https://digmodel.se/assets/Skogsstyrelsen.png" alt="Skogsstyrelsen"></div>
-        <div><img src="https://digmodel.se/assets/Riksantikvarie.png" alt="Riksantikvarieämbetet"></div>
-        <div><img src="https://digmodel.se/assets/SGI.png" alt="SGI"></div>
+        <div><img src="/assets/Lantmäteriet.png" alt="Lantmäteriet"></div>
+        <div><img src="/assets/Geodata.png" alt="Geodata"></div>
+        <div><img src="/assets/CopernicusEU.png" alt="CopernicusEU"></div>
+        <div><img src="/assets/Skogsstyrelsen.png" alt="Skogsstyrelsen"></div>
+        <div><img src="/assets/Riksantikvarie.png" alt="Riksantikvarieämbetet"></div>
+        <div><img src="/assets/SGI.png" alt="SGI"></div>
       </div>
     </section>
 
@@ -412,7 +412,7 @@ appId: "DIN_APP_ID"
                         <a href="https://cloud.google.com/startup" class="google-startup-link">Google for Startups Cloud Program</a>,
                         <span data-i18n="info.about.p3.part2">vilket ger oss stöd i att växa och leverera säkra, skalbara lösningar.</span>
                         </p>
-                      <a href="https://digmodel.se/om-oss/" class="learn-more-link" data-i18n="info.about.cta">
+                      <a href="/om-oss/" class="learn-more-link" data-i18n="info.about.cta">
                         Läs mer om Digmodel <span class="learn-more-arrow"></span>
                       </a>
                     </div>
@@ -425,7 +425,7 @@ appId: "DIN_APP_ID"
   <div class="webpage-container">
     <div class="footer-container">
       <div class="footer-left" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-        <img src="https://digmodel.se/assets/Symbol_inverted.svg"
+        <img src="/assets/Symbol_inverted.svg"
              alt="Logotyp i sidfoten"
              style="height: 32px;"
              data-i18n-attr="alt:footer.logoAlt" />
@@ -442,19 +442,19 @@ appId: "DIN_APP_ID"
 
       <div class="footer-right">
         <a href="https://www.linkedin.com/company/digmodel/about/" class="social-icon">
-          <img src="https://digmodel.se/assets/Icon_linkedin_dark.svg" alt="LinkedIn">
+          <img src="/assets/Icon_linkedin_dark.svg" alt="LinkedIn">
         </a>
         <a href="https://www.youtube.com/@DigmodelSE" class="social-icon">
-          <img src="https://digmodel.se/assets/Icon_youtube_dark.svg" alt="YouTube">
+          <img src="/assets/Icon_youtube_dark.svg" alt="YouTube">
         </a>
         <a href="https://www.instagram.com/digmodelse?igsh=OHBqdzdwNDV2OHN1&utm_source=qr" class="social-icon">
-          <img src="https://digmodel.se/assets/Icon_instagram_dark.svg" alt="Instagram">
+          <img src="/assets/Icon_instagram_dark.svg" alt="Instagram">
         </a>
         <a href="https://www.facebook.com/people/Digmodel/61568322969929/" class="social-icon">
-          <img src="https://digmodel.se/assets/Icon_facebook_dark.svg" alt="Facebook">
+          <img src="/assets/Icon_facebook_dark.svg" alt="Facebook">
         </a>
         <a href="https://x.com/digmodelSE" class="social-icon">
-          <img src="https://digmodel.se/assets/Icon_x_dark.svg" alt="X">
+          <img src="/assets/Icon_x_dark.svg" alt="X">
         </a>
       </div>
     </div>
@@ -482,7 +482,7 @@ appId: "DIN_APP_ID"
       <button class="cookie-btn accept-necessary" data-action="accept-necessary" data-i18n="cookie.acceptNecessary">Acceptera endast nödvändiga cookies</button>
       <button class="cookie-btn reject-all" data-action="reject-all" data-i18n="cookie.rejectAll">Avvisa alla cookies</button>
       <button class="cookie-btn settings" data-action="settings">
-        <img src="https://digmodel.se/assets/Cookiesettings.svg"
+        <img src="/assets/Cookiesettings.svg"
      alt="Inställningar för cookies"
      data-i18n-attr="alt:cookie.iconAlt">
       </button>

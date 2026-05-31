@@ -1,14 +1,15 @@
-﻿﻿﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Digmodel erbjuder högupplösta terrängmodeller och öppen digital information från statliga myndigheter. Ladda enkelt ner och integrera produkten med er digitala arbetsprocess">
   <meta name="keywords" content="terrängmodell, GIS, 3D-modellering, kartdata, höjddata, Digmodel">
   <meta name="author" content="Digmodel AB">
   <meta property="og:title" content="Digmodel - Digitala terrängmodeller och öppen data">
   <meta property="og:description" content="Ladda ner högkvalitativ terrängdata för analys och simulering.">
-  <meta property="og:image" content="https://digmodel.se/assets/images/og-image.jpg">
+  <meta property="og:image" content="https://digmodel.se/assets/og-image-1200x630.png">
   <meta property="og:url" content="https://digmodel.se">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="canonical" href="https://digmodel.se/download/">
@@ -18,9 +19,9 @@
   <link rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.2/firebase-ui-auth.css" />
 
   <!-- ✅ Favicons -->
-  <link rel="icon" type="image/svg+xml" href="https://digmodel.se/assets/Favicon_Light.svg" media="(prefers-color-scheme: light)">
-  <link rel="icon" type="image/svg+xml" href="https://digmodel.se/assets/Favicon_Dark.svg" media="(prefers-color-scheme: dark)">
-  <link rel="icon" type="image/svg+xml" href="https://digmodel.se/assets/Favicon_Light.svg"> <!-- fallback -->
+  <link rel="icon" type="image/svg+xml" href="/assets/Favicon_Light.svg" media="(prefers-color-scheme: light)">
+  <link rel="icon" type="image/svg+xml" href="/assets/Favicon_Dark.svg" media="(prefers-color-scheme: dark)">
+  <link rel="icon" type="image/svg+xml" href="/assets/Favicon_Light.svg"> <!-- fallback -->
 
   <!-- Tailwind CSS -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
@@ -35,7 +36,7 @@
     "@type": "Organization",
     "name": "Digmodel AB",
     "url": "https://digmodel.se",
-    "logo": "https://digmodel.se/assets/images/Symbol_tagline_inverted.svg",
+    "logo": "https://digmodel.se/assets/Symbol_tagline_inverted.svg",
     "contactPoint": {
       "@type": "ContactPoint",
       "telephone": "08-123 45 67",
@@ -141,7 +142,7 @@
 
           <div class="map-controls-wrapper">
             <div class="logo-container">
-              <img src="https://digmodel.se/assets/Symbol_tagline_inverted.svg" alt="Digmodel logotyp" class="logo">
+              <img src="/assets/Symbol_tagline_inverted.svg" alt="Digmodel logotyp" class="logo">
               <div class="subscription-info">Abonnemang: <strong id="sub-role">-</strong></div>
             </div>
 
@@ -151,7 +152,7 @@
               <div id="search-container" role="search">
                 <label for="search" class="visually-hidden">Sök efter adress</label>
                 <input type="text" id="search" list="suggestions" placeholder="Sök efter adress" aria-label="Sök efter adress" autocomplete="off">
-                <img src="https://digmodel.se/assets/Location_Dark.svg" alt="" class="search-icon" aria-hidden="true">
+                <img src="/assets/Location_Dark.svg" alt="" class="search-icon" aria-hidden="true">
                 <datalist id="suggestions"></datalist>
               </div>
 
@@ -165,7 +166,7 @@
                         aria-expanded="false"
                         aria-controls="crs-options"
                         data-crs="origo">
-                  <img src="https://digmodel.se/assets/Origo_Dark.svg" alt="Origo ikon">
+                  <img src="/assets/Origo_Dark.svg" alt="Origo ikon">
                   <span class="control-label" style="top:-20px;">Origo</span>
                 </button>
                 <div id="crs-options" class="crs-options" role="listbox" aria-labelledby="crs-button">
@@ -174,11 +175,11 @@
                 </div>
               </div>
               <button id="toggle-dxf" class="control-button" aria-label="DXF">
-                <img src="https://digmodel.se/assets/DFX_Dark.svg" alt="DXF ikon">
+                <img src="/assets/DFX_Dark.svg" alt="DXF ikon">
                 <span class="control-label" style="top:-20px;">Addera DXF till export</span>
               </button>
               <button class="control-button" aria-label="Download" id="download-button">
-                <img src="https://digmodel.se/assets/Download_Dark.svg" alt="Download ikon">
+                <img src="/assets/Download_Dark.svg" alt="Download ikon">
                 <span class="control-label" style="top:-20px;">Ladda ner</span>
               </button>
             </div>
@@ -202,7 +203,7 @@
 
   <!-- Logout alltid när inloggad+verifierad -->
   <button id="logout-btn" type="button" class="control-button hidden" aria-label="Logga ut" title="Logga ut">
-    <img src="https://digmodel.se/assets/Logout_Dark.svg" alt="Logga ut ikon" class="icon-24">
+    <img src="/assets/Logout_Dark.svg" alt="Logga ut ikon" class="icon-24">
     <span class="control-label">Logga ut</span>
   </button>
 </div>
@@ -269,7 +270,7 @@
                 <a href="https://cloud.google.com/startup" class="google-startup-link">Google for Startups Cloud Program</a>,
                 <span data-i18n="info.about.p3.part2">vilket ger oss stöd i att växa och leverera säkra, skalbara lösningar.</span>
               </p>
-              <a href="https://digmodel.se/om-oss/" class="learn-more-link" data-i18n="info.about.cta">
+              <a href="/om-oss/" class="learn-more-link" data-i18n="info.about.cta">
                 Läs mer om Digmodel <span class="learn-more-arrow"></span>
               </a>
             </div>
@@ -281,7 +282,7 @@
           <div class="webpage-container">
             <div class="footer-container">
               <div class="footer-left" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-                <img src="https://digmodel.se/assets/Symbol_inverted.svg"
+                <img src="/assets/Symbol_inverted.svg"
                      alt="Logotyp i sidfoten"
                      style="height: 32px;"
                      data-i18n-attr="alt:footer.logoAlt" />
@@ -296,19 +297,19 @@
 
               <div class="footer-right">
                 <a href="https://www.linkedin.com/company/digmodel/about/" class="social-icon">
-                  <img src="https://digmodel.se/assets/Icon_linkedin_dark.svg" alt="LinkedIn">
+                  <img src="/assets/Icon_linkedin_dark.svg" alt="LinkedIn">
                 </a>
                 <a href="https://www.youtube.com/@DigmodelSE" class="social-icon">
-                  <img src="https://digmodel.se/assets/Icon_youtube_dark.svg" alt="YouTube">
+                  <img src="/assets/Icon_youtube_dark.svg" alt="YouTube">
                 </a>
                 <a href="https://www.instagram.com/digmodelse?igsh=OHBqdzdwNDV2OHN1&utm_source=qr" class="social-icon">
-                  <img src="https://digmodel.se/assets/Icon_instagram_dark.svg" alt="Instagram">
+                  <img src="/assets/Icon_instagram_dark.svg" alt="Instagram">
                 </a>
                 <a href="https://www.facebook.com/people/Digmodel/61568322969929/" class="social-icon">
-                  <img src="https://digmodel.se/assets/Icon_facebook_dark.svg" alt="Facebook">
+                  <img src="/assets/Icon_facebook_dark.svg" alt="Facebook">
                 </a>
                 <a href="https://x.com/digmodelSE" class="social-icon">
-                  <img src="https://digmodel.se/assets/Icon_x_dark.svg" alt="X">
+                  <img src="/assets/Icon_x_dark.svg" alt="X">
                 </a>
               </div>
             </div>
